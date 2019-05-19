@@ -22,13 +22,24 @@ class BlogIndex extends React.Component {
   async fetch() {
     this.setState({ loading: true })
     try {
+      const events = this.props.data.allConnpassEventsJson.edges.map(({node}) => node)
+      const event_id = events.map(e => e.event_id).join(',')
+      const connpassOption = { params: {'event_id': event_id }}
+
       const { data: dataHello } = await axios.get("/.netlify/functions/hello")
-      const { data: dataConnpass } = await axios.get("/.netlify/functions/connpass")
+      const { data: dataConnpass } = await axios.get('/.netlify/functions/connpass', connpassOption)
       console.log(dataConnpass)
       this.setState({
         loading: false,
         hello: dataHello.msg,
-        events: dataConnpass.events,
+        events: dataConnpass.events.map(event => {
+          const target = events.find(e => e.event_id === '' + event.event_id)
+
+          return {
+            ...event,
+            thumbnail_url: target.thumbnail_url,
+          }
+        }),
       })
     } catch(error) {
       this.setState({
@@ -60,7 +71,7 @@ class BlogIndex extends React.Component {
 
           : this.state.events.map(event =>
               <div key={event.event_id} >
-                <img src={event.thumbnail_url} />
+                <img src={event.thumbnail_url} alt="thumbnail"/>
                 <p>{event.started_at}</p>
                 <p>{event.title}</p>
                 <p>{event.address} {event.place}</p>
@@ -120,6 +131,14 @@ export const pageQuery = graphql`
         title
       }
     }
+    allConnpassEventsJson {
+      edges {
+        node {
+          event_id
+          thumbnail_url
+        }
+      }
+    } 
     allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
       edges {
         node {
