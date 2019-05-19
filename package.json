@@ -51,6 +51,7 @@
     "build:app": "gatsby build",
     "build:lambda": "netlify-lambda build src/lambda",
     "serve": "gatsby serve",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\""
+    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\"",
+    "rm": "rm -rf ./.cache && rm -rf ./public"
   }
 }
