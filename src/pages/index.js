@@ -11,22 +11,24 @@ class BlogIndex extends React.Component {
   state = {
     loading: false,
     error: false,
-    hello: null
+    hello: null,
+    events:[],
   }
 
   componentDidMount() {
-    this.fetchHello()
+    this.fetch()
   }
 
-  async fetchHello() {
+  async fetch() {
     this.setState({ loading: true })
     try {
-      const { data } = await axios.get("/.netlify/functions/hello")
-      console.log('hgoehgoehoge')
-      console.log(data)
+      const { data: dataHello } = await axios.get("/.netlify/functions/hello")
+      const { data: dataConnpass } = await axios.get("/.netlify/functions/connpass")
+      console.log(dataConnpass)
       this.setState({
         loading: false,
-        hello: data.msg,
+        hello: dataHello.msg,
+        events: dataConnpass.events,
       })
     } catch(error) {
       this.setState({
@@ -40,11 +42,30 @@ class BlogIndex extends React.Component {
     const siteTitle = data.site.siteMetadata.title
     const posts = data.allMarkdownRemark.edges
 
-    const helloText = this.state.loading
-      ? 'Please hold, hello incoming!'
-      : this.state.hello
-        ? this.state.hello
-        : 'Not Found'
+    const helloText =
+      this.state.loading
+        ? 'Please hold, hello incoming!'
+
+        : this.state.hello
+          ? this.state.hello
+
+          : 'Hello not found'
+
+    const eventArea =
+      this.state.loading
+        ? <p>'Please hold, events incoming!'</p>
+
+        : this.state.events.length === 0
+          ? <p>'Events not found'</p>
+
+          : this.state.events.map(event =>
+              <div key={event.event_id} >
+                <img src={event.thumbnail_url} />
+                <p>{event.started_at}</p>
+                <p>{event.title}</p>
+                <p>{event.address} {event.place}</p>
+              </div>
+            )
 
 
     return (
@@ -61,6 +82,7 @@ class BlogIndex extends React.Component {
         >
           {helloText}
         </p>
+        <div>{eventArea}</div>
 
         {posts.map(({ node }) => {
           const title = node.frontmatter.title || node.fields.slug
