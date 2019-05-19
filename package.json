@@ -1,12 +1,7 @@
 {
-  "name": "gatsby-starter-blog",
+  "name": "gatsby-playbox",
   "private": true,
-  "description": "A starter for a blog powered by Gatsby and Markdown",
   "version": "0.1.0",
-  "author": "Kyle Mathews <mathews.kyle@gmail.com>",
-  "bugs": {
-    "url": "https://github.com/gatsbyjs/gatsby/issues"
-  },
   "dependencies": {
     "axios": "^0.18.0",
     "gatsby": "^2.5.5",
@@ -42,16 +37,11 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^1.17.1"
   },
-  "homepage": "https://github.com/gatsbyjs/gatsby-starter-blog#readme",
   "keywords": [
     "gatsby"
   ],
   "license": "MIT",
   "main": "n/a",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/gatsbyjs/gatsby-starter-blog.git"
-  },
   "scripts": {
     "develop": "gatsby develop",
     "start": "run-p start:**",
