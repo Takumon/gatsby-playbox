@@ -83,6 +83,30 @@ class BlogIndex extends React.Component {
       <Layout location={this.props.location} title={siteTitle}>
         <SEO title="All posts" />
         <Bio />
+        {
+          <form name="contact" method="POST" data-netlify="true">
+            <p>
+              <label>名前: <input type="text" name="name" required /></label>
+            </p>
+            <p>
+              <label>メール: <input type="email" name="email" required /></label>
+            </p>
+            <p>
+              <label>お問い合わせ内容: <select name="reason" required>
+              <option value="1">質問1</option>
+              <option value="2">質問2</option>
+              <option value="3">質問3</option>
+              <option value="4">質問4</option>
+              </select></label>
+            </p>
+            <p>
+              <label>メッセージ: <textarea name="message"></textarea></label>
+            </p>
+            <p>
+              <button type="submit">送信</button>
+            </p>
+          </form>
+        }
         <p
           style={{
             ...scale(-1 / 5),
