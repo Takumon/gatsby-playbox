@@ -124,6 +124,7 @@ class BlogIndex extends React.Component {
           <Formik
             initialValues={{
               'form-name': 'contact',
+              'bot-field': '',
               name: '',
               email: '',
               reason: '2',
@@ -143,8 +144,10 @@ class BlogIndex extends React.Component {
                 method="POST"
                 novalidate="true"
                 data-netlify="true"
+                netlify-honeypot="bot-field"
               >
-                <Field type="hidden" name="form-name" value="contact" />
+                <Field type="hidden" name="bot-field" />
+                <Field type="hidden" name="form-name" />
                 <p>
                   <label>名前: <Field type="text" name="name"/></label>
                   <ErrorMessage name="name" />
