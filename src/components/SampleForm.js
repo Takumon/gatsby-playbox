@@ -66,9 +66,10 @@ class SampleForm extends React.Component {
         }}
         render={
           ({
-          handleSubmit,
-          dirty,
-          isSubmitting,
+            handleSubmit,
+            dirty,
+            isSubmitting,
+            setFieldValue,
           }) => (
             <form
               name="contact"
