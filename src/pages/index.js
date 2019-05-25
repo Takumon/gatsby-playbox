@@ -85,6 +85,7 @@ class BlogIndex extends React.Component {
         <Bio />
         {
           <form name="contact" method="POST" data-netlify="true">
+            <input type="hidden" name="form-name" value="contact" />
             <p>
               <label>名前: <input type="text" name="name" required /></label>
             </p>
