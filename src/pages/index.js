@@ -134,12 +134,10 @@ class BlogIndex extends React.Component {
               actions.setSubmitting(true);
             }}
             render={({
-              handleSubmit,
               dirty,
               isSubmitting,
             }) => (
               <form
-                onSubmit={handleSubmit}
                 name="contact"
                 method="POST"
                 novalidate="true"
