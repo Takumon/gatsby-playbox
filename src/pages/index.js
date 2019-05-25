@@ -123,6 +123,7 @@ class BlogIndex extends React.Component {
         {
           <Formik
             initialValues={{
+              'form-name': 'contact',
               name: '',
               email: '',
               reason: '2',
