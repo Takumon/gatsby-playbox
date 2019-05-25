@@ -50,10 +50,20 @@ class SampleForm extends React.Component {
         }}
         validate={validate}
         onSubmit={(values, actions) => {
+          console.log(values.sampleFile);
+          const  params = new FormData()
+          params.append('form-name', values['form-name'])
+          params.append('bot-field', values['bot-field'])
+          params.append('name', values.name)
+          params.append('email', values.email)
+          params.append('reason', values.reason)
+          params.append('message', values.message)
+          params.append('sampleFile', values.sampleFile)
+
           const options = {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            data: qs.stringify(values),
+            data: params,
             url: "/"
           };
           axios(options).then(res => {
@@ -120,8 +130,9 @@ class SampleForm extends React.Component {
                     id="sampleFile"
                     name="sampleFile"
                     type="file"
-                    onChange={(event) => {
-                      setFieldValue("sampleFile", event.currentTarget.files[0]);
+                    onChange={event => {
+                      console.log(event.currentTarget.files[0])
+                      setFieldValue("sampleFile", event.currentTarget.files[0])
                     }}
                   />
                 </label>
