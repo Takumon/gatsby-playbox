@@ -143,7 +143,6 @@ class BlogIndex extends React.Component {
                 method="POST"
                 novalidate="true"
                 data-netlify="true"
-                data-netlify-recaptcha="true"
               >
                 <Field type="hidden" name="form-name" value="contact" />
                 <p>
