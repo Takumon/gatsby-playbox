@@ -6,6 +6,37 @@ import Layout from "../components/layout"
 import SEO from "../components/seo"
 import { rhythm, scale } from "../utils/typography"
 import axios from "axios"
+import { Formik, Field } from 'formik';
+import ErrorMessage from "../components/ErrorMessage"
+
+
+function validate(values) {
+  let errors = {}
+
+  // name
+  if (!values.name) {
+    errors.name = '名前を入力してください';
+  } else if(values.name.length > 100) {
+    errors.name = '名前は100文字以内で入力してください';
+  }
+ 
+  // email
+  if (!values.email) {
+    errors.email = 'メールを入力してください';
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+    errors.email = 'メールの形式が正しくありません';
+  }
+
+  // reason
+  // novalidation
+
+  // message
+  if (values.message && values.message.length > 400) {
+    errors.password = 'メッセージは400字以内で入力してください'
+  }
+
+  return errors
+}
 
 class BlogIndex extends React.Component {
   state = {
@@ -48,6 +79,10 @@ class BlogIndex extends React.Component {
     }
   }
 
+  handleFormSubmit() {
+
+  }
+
   render() {
     const { data } = this.props
     const siteTitle = data.site.siteMetadata.title
@@ -79,34 +114,69 @@ class BlogIndex extends React.Component {
             )
 
 
+
+
     return (
       <Layout location={this.props.location} title={siteTitle}>
         <SEO title="All posts" />
         <Bio />
         {
-          <form action="/thanks" name="contact" method="POST" data-netlify="true">
-            <input type="hidden" name="form-name" value="contact" />
-            <p>
-              <label>名前: <input type="text" name="name" required /></label>
-            </p>
-            <p>
-              <label>メール: <input type="email" name="email" required /></label>
-            </p>
-            <p>
-              <label>お問い合わせ内容: <select name="reason" required>
-              <option value="1">質問1</option>
-              <option value="2">質問2</option>
-              <option value="3">質問3</option>
-              <option value="4">質問4</option>
-              </select></label>
-            </p>
-            <p>
-              <label>メッセージ: <textarea name="message"></textarea></label>
-            </p>
-            <p>
-              <button type="submit">送信</button>
-            </p>
-          </form>
+          <Formik
+            initialValues={{
+              name: '',
+              email: '',
+              reason: '2',
+              message: '',
+            }}
+            validate={validate}
+            onSubmit={(values, actions) => {
+              alert(JSON.stringify(values, null, 2));
+              actions.setSubmitting(true);
+            }}
+            render={({
+              handleSubmit,
+              dirty,
+              isSubmitting,
+            }) => (
+              <form
+                onSubmit={handleSubmit}
+                name="contact"
+                method="POST"
+                novalidate="true"
+                data-netlify="true"
+                data-netlify-recaptcha="true"
+              >
+                <Field type="hidden" name="form-name" value="contact" />
+                <p>
+                  <label>名前: <Field type="text" name="name"/></label>
+                  <ErrorMessage name="name" />
+                </p>
+                <p>
+                  <label>メール: <Field type="email" name="email"/></label>
+                  <ErrorMessage name="email" />
+                </p>
+                <p>
+                  <label>お問い合わせ内容: 
+                    <Field component="select" name="reason">
+                      <option value="1">質問1</option>
+                      <option value="2">質問2</option>
+                      <option value="3">質問3</option>
+                      <option value="4">質問4</option>
+                    </Field>
+                  </label>
+                </p>
+                <p>
+                  <label>メッセージ: <Field component="textarea" name="message" /></label>
+                  <ErrorMessage name="message" />
+                </p>
+                <p>
+                  <button type="submit" disabled={!dirty && isSubmitting}>
+                    送信
+                  </button>
+                </p>
+              </form>
+            )}
+          />
         }
         <p
           style={{
