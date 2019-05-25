@@ -5,6 +5,7 @@ exports.createPages = ({ graphql, actions }) => {
   const { createPage } = actions
 
   const blogPost = path.resolve(`./src/templates/blog-post.js`)
+  const thanks = path.resolve(`./src/templates/thanks.js`)
   return graphql(
     `
       {
@@ -30,6 +31,14 @@ exports.createPages = ({ graphql, actions }) => {
       throw result.errors
     }
 
+
+    
+
+    createPage({
+      path: '/thanks',
+      component: thanks,
+    })
+
     // Create blog posts pages.
     const posts = result.data.allMarkdownRemark.edges
 
@@ -51,6 +60,7 @@ exports.createPages = ({ graphql, actions }) => {
     return null
   })
 }
+
 
 exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions
