@@ -1,11 +1,11 @@
 import React from "react"
 import { Link, graphql } from "gatsby"
-
 import Bio from "../components/bio"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import { rhythm, scale } from "../utils/typography"
 import axios from "axios"
+import qs from "qs"
 import { Formik, Field } from 'formik';
 import ErrorMessage from "../components/ErrorMessage"
 
@@ -132,10 +132,22 @@ class BlogIndex extends React.Component {
             }}
             validate={validate}
             onSubmit={(values, actions) => {
-              alert(JSON.stringify(values, null, 2));
-              actions.setSubmitting(true);
+              const options = {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                data: qs.stringify(values),
+                url: "/"
+              };
+              axios(options).then(res => {
+                actions.resetForm();
+                actions.setSubmitting(false);
+                alert('問い合わせ内容を送信しました。')
+              }).catch(err => {
+                alert(err);
+              })
             }}
             render={({
+              handleSubmit,
               dirty,
               isSubmitting,
             }) => (
@@ -145,6 +157,7 @@ class BlogIndex extends React.Component {
                 novalidate="true"
                 data-netlify="true"
                 netlify-honeypot="bot-field"
+                onSubmit={handleSubmit}
               >
                 <Field type="hidden" name="bot-field" />
                 <Field type="hidden" name="form-name" />
